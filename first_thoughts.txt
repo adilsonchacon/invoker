@@ -1,19 +1,14 @@
 func CallMethod(iValue interface{}, methodName string, args ...interface{}) ([]reflect.Value, error) {
-	var finalMethod reflect.Value
-
 	inputs := convertArgsToReflectValue(args)
 	value, ptr := initializeValueAndItsPointer(iValue)
 
 	methodValue := value.MethodByName(methodName)
 	methodPtr := ptr.MethodByName(methodName)
+	
 	if methodValue.IsValid() {
-		finalMethod = methodValue
+		return methodValue.Call(inputs), nil
 	} else if methodPtr.IsValid() {
-		finalMethod = methodPtr
-	}
-
-	if finalMethod.IsValid() {
-		return finalMethod.Call(inputs), nil
+		return methodPtr.Call(inputs), nil
 	}
 
 	return []reflect.Value{}, errors.New("method not found")

@@ -2,8 +2,121 @@ package invoker
 
 import (
 	"reflect"
+	"strconv"
 	"testing"
 )
+
+// ----------- Start of Interface -----------
+type MySetInterface interface {
+	Add(value int)
+	GetValues() []int
+}
+
+type MySet struct {
+	Values map[int]bool
+}
+
+func (mySet *MySet) Add(value int) {
+	if mySet.Values == nil {
+		mySet.Values = make(map[int]bool)
+	}
+
+	mySet.Values[value] = true
+}
+
+func (mySet *MySet) GetValues() []int {
+	var values []int
+
+	if mySet.Values != nil {
+		for value := range mySet.Values {
+			values = append(values, value)
+		}
+	}
+
+	return values
+}
+
+// ----------- End of Interface -----------
+
+// ----------- Start of Composition -----------
+type MyMath struct {
+	Operand1 int
+	Operand2 int
+}
+
+func (myMath *MyMath) Sum() int {
+	return myMath.Operand1 + myMath.Operand2
+}
+
+func (myMath *MyMath) IsSumZero() bool {
+	return myMath.Sum() == 0
+}
+
+func (myMath *MyMath) Average() float64 {
+	return float64(myMath.Sum()) / 2.0
+}
+
+func (myMath *MyMath) ConvertSumToStr() string {
+	return strconv.Itoa(myMath.Sum())
+}
+
+func (myMath *MyMath) GetOperandsAsInt() []int {
+	return []int{myMath.Operand1, myMath.Operand2}
+}
+
+func (myMath *MyMath) GetOperandsAsString() []string {
+	return []string{strconv.Itoa(myMath.Operand1), strconv.Itoa(myMath.Operand2)}
+}
+
+func (myMath *MyMath) GetOperandsAsFloat64() []float64 {
+	return []float64{float64(myMath.Operand1), float64(myMath.Operand2)}
+}
+
+func (myMath *MyMath) AreOperandsEven() []bool {
+	return []bool{(myMath.Operand1%2 == 0), (myMath.Operand2%2 == 0)}
+}
+
+// ----------- End of Composition -----------
+
+func TestInitializeValueAndItsPointer(t *testing.T) {
+	type TestMyMath struct {
+		MyMath
+	}
+
+	testMyMath := TestMyMath{}
+	testMyMathValue, testMyMathPointer := initializeValueAndItsPointer(testMyMath)
+
+	switch v := testMyMathValue.Interface().(type) {
+	case TestMyMath:
+		t.Log("initializeValueAndItsPointer(testMyMath, \"sum\") PASSED, first returned type value is a TestMyMath")
+	default:
+		t.Errorf("initializeValueAndItsPointer(testMyMath, \"sum\") FAILED, first returned type value is a %v", v)
+	}
+
+	switch v := testMyMathPointer.Interface().(type) {
+	case *TestMyMath:
+		t.Log("initializeValueAndItsPointer(testMyMath, \"sum\") PASSED, second returned type value is a *TestMyMath")
+	default:
+		t.Errorf("initializeValueAndItsPointer(testMyMath, \"sum\") FAILED, second returned type value is a %v", v)
+	}
+
+	testMyMath1 := &TestMyMath{}
+	testMyMathValue1, testMyMathPointer1 := initializeValueAndItsPointer(testMyMath1)
+
+	switch v := testMyMathValue1.Interface().(type) {
+	case TestMyMath:
+		t.Log("initializeValueAndItsPointer(testMyMath, \"sum\") PASSED, first returned type value is a TestMyMath")
+	default:
+		t.Errorf("initializeValueAndItsPointer(testMyMath, \"sum\") FAILED, first returned type value is a %v", v)
+	}
+
+	switch v := testMyMathPointer1.Interface().(type) {
+	case *TestMyMath:
+		t.Log("initializeValueAndItsPointer(testMyMath, \"sum\") PASSED, second returned type value is a *TestMyMath")
+	default:
+		t.Errorf("initializeValueAndItsPointer(testMyMath, \"sum\") FAILED, second returned type value is a %v", v)
+	}
+}
 
 func TestConvertInterfaceArgsToReflectValue(t *testing.T) {
 	var iValues interface{}
