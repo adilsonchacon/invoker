@@ -11,12 +11,9 @@ type MyMath struct {
 	Operand2 int
 }
 
+// without params
 func (myMath *MyMath) Sum() int {
 	return myMath.Operand1 + myMath.Operand2
-}
-
-func (myMath *MyMath) SumWithExtras(a, b, c int) int {
-	return myMath.Sum() + a + b + c
 }
 
 func (myMath *MyMath) Average() float64 {
@@ -45,6 +42,39 @@ func (myMath *MyMath) TransformOperandsToTenPercent() []float64 {
 
 func (myMath *MyMath) AreOperandsEven() []bool {
 	return []bool{((myMath.Operand1 % 2) == 0), ((myMath.Operand2 % 2) == 0)}
+}
+
+// with params
+func (myMath *MyMath) SumWithExtras(a, b, c int) int {
+	return myMath.Sum() + a + b + c
+}
+
+func (myMath *MyMath) WeightedAverage(weight1, weight2 float64) float64 {
+	return (float64(myMath.Operand1)*weight1 + float64(myMath.Operand2)*weight2) / (weight1 + weight2)
+}
+
+func (myMath *MyMath) SumWithExtraIntAndPrefixString(extra int, prefix string) string {
+	return prefix + strconv.Itoa(myMath.Sum()+extra)
+}
+
+func (myMath *MyMath) IsFirstOperandBiggerThanArgValue(value int) bool {
+	return myMath.Operand1 > value
+}
+
+func (myMath *MyMath) MultiplyOperandsByArgValue(value int) []int {
+	return []int{(myMath.Operand1 * value), (myMath.Operand2 * value)}
+}
+
+func (myMath *MyMath) DivideOperandsByArgValue(value float64) []float64 {
+	return []float64{(float64(myMath.Operand1) / value), (float64(myMath.Operand2) / value)}
+}
+
+func (myMath *MyMath) PutOperandsBetweenString(value string) []string {
+	return []string{value + strconv.Itoa(myMath.Operand1) + value, value + strconv.Itoa(myMath.Operand2) + value}
+}
+
+func (myMath *MyMath) AreOperandsBiggerThanArgValue(value int) []bool {
+	return []bool{(myMath.Operand1 > value), (myMath.Operand2 > value)}
 }
 
 func TestCallMethod(t *testing.T) {
@@ -101,22 +131,6 @@ func TestCallMethodWithParamsAndReturnInt(t *testing.T) {
 	}
 }
 
-func TestCallMethodAndReturnBool(t *testing.T) {
-	type TestMyMath struct {
-		MyMath
-	}
-
-	testMyMath := TestMyMath{}
-	testMyMath.Operand1 = 2
-	testMyMath.Operand2 = 2
-	boolValue, _ := CallMethodAndReturnBool(testMyMath, "AreOperandsEqual")
-	if boolValue {
-		t.Log("CallMethodAndReturnBool(testMyMath, \"AreOperandsEqual\") PASSED, returned value is TRUE")
-	} else {
-		t.Error("CallMethodAndReturnBool(testMyMath, \"AreOperandsEqual\") FAILED, returned value expected to be TRUE, but is FALSE")
-	}
-}
-
 func TestCallMethodAndReturnFloat64(t *testing.T) {
 	type TestMyMath struct {
 		MyMath
@@ -149,6 +163,22 @@ func TestCallMethodAndReturnString(t *testing.T) {
 	}
 }
 
+func TestCallMethodAndReturnBool(t *testing.T) {
+	type TestMyMath struct {
+		MyMath
+	}
+
+	testMyMath := TestMyMath{}
+	testMyMath.Operand1 = 2
+	testMyMath.Operand2 = 2
+	boolValue, _ := CallMethodAndReturnBool(testMyMath, "AreOperandsEqual")
+	if boolValue {
+		t.Log("CallMethodAndReturnBool(testMyMath, \"AreOperandsEqual\") PASSED, returned value is TRUE")
+	} else {
+		t.Error("CallMethodAndReturnBool(testMyMath, \"AreOperandsEqual\") FAILED, returned value expected to be TRUE, but is FALSE")
+	}
+}
+
 func TestCallMethodAndReturnSliceOfInt(t *testing.T) {
 	type TestMyMath struct {
 		MyMath
@@ -178,35 +208,6 @@ func TestCallMethodAndReturnSliceOfInt(t *testing.T) {
 	}
 }
 
-func TestCallMethodAndReturnSliceOfString(t *testing.T) {
-	type TestMyMath struct {
-		MyMath
-	}
-
-	testMyMath := TestMyMath{}
-	testMyMath.Operand1 = 2
-	testMyMath.Operand2 = 3
-	stringValues, _ := CallMethodAndReturnSliceOfString(testMyMath, "PutOperandsBetweenXs")
-	if len(stringValues) == 2 {
-		t.Log("CallMethodAndReturnSliceOfString(testMyMath, \"PutOperandsBetweenXs\") PASSED, length of the returned value is 2")
-
-		if stringValues[0] == "X2X" {
-			t.Log("CallMethodAndReturnSliceOfString(testMyMath, \"PutOperandsBetweenXs\") PASSED, value of fisrt element in slice is \"X2X\"")
-		} else {
-			t.Errorf("CallMethodAndReturnSliceOfString(testMyMath, \"PutOperandsBetweenXs\") FAILED, value of fisrt element in slice should be \"X2X\", but is \"X%sX\"", stringValues[0])
-		}
-
-		if stringValues[1] == "X3X" {
-			t.Log("CallMethodAndReturnSliceOfString(testMyMath, \"PutOperandsBetweenXs\") PASSED, value of second element in slice is \"X3X\"")
-		} else {
-			t.Errorf("CallMethodAndReturnSliceOfString(testMyMath, \"PutOperandsBetweenXs\") FAILED, value of second element in slice should be 3, but is %s", stringValues[1])
-		}
-
-	} else {
-		t.Errorf("CallMethodAndReturnSliceOfString(testMyMath, \"PutOperandsBetweenXs\") FAILED, length of the returned value expected to be 2, but is %d", len(stringValues))
-	}
-}
-
 func TestCallMethodAndReturnSliceOfFloat64(t *testing.T) {
 	type TestMyMath struct {
 		MyMath
@@ -233,6 +234,35 @@ func TestCallMethodAndReturnSliceOfFloat64(t *testing.T) {
 
 	} else {
 		t.Errorf("CallMethodAndReturnSliceOfFloat64(testMyMath, \"TransformOperandsToTenPercent\") FAILED, length of the returned value expected to be 2, but is %d", len(float64Values))
+	}
+}
+
+func TestCallMethodAndReturnSliceOfString(t *testing.T) {
+	type TestMyMath struct {
+		MyMath
+	}
+
+	testMyMath := TestMyMath{}
+	testMyMath.Operand1 = 2
+	testMyMath.Operand2 = 3
+	stringValues, _ := CallMethodAndReturnSliceOfString(testMyMath, "PutOperandsBetweenXs")
+	if len(stringValues) == 2 {
+		t.Log("CallMethodAndReturnSliceOfString(testMyMath, \"PutOperandsBetweenXs\") PASSED, length of the returned value is 2")
+
+		if stringValues[0] == "X2X" {
+			t.Log("CallMethodAndReturnSliceOfString(testMyMath, \"PutOperandsBetweenXs\") PASSED, value of fisrt element in slice is \"X2X\"")
+		} else {
+			t.Errorf("CallMethodAndReturnSliceOfString(testMyMath, \"PutOperandsBetweenXs\") FAILED, value of fisrt element in slice should be \"X2X\", but is \"X%sX\"", stringValues[0])
+		}
+
+		if stringValues[1] == "X3X" {
+			t.Log("CallMethodAndReturnSliceOfString(testMyMath, \"PutOperandsBetweenXs\") PASSED, value of second element in slice is \"X3X\"")
+		} else {
+			t.Errorf("CallMethodAndReturnSliceOfString(testMyMath, \"PutOperandsBetweenXs\") FAILED, value of second element in slice should be 3, but is %s", stringValues[1])
+		}
+
+	} else {
+		t.Errorf("CallMethodAndReturnSliceOfString(testMyMath, \"PutOperandsBetweenXs\") FAILED, length of the returned value expected to be 2, but is %d", len(stringValues))
 	}
 }
 

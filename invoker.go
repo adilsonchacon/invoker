@@ -2,14 +2,13 @@ package invoker
 
 import (
 	"errors"
-	"fmt"
 	"reflect"
 )
 
-func CallMethod(iValue interface{}, methodName string, args ...interface{}) ([]reflect.Value, error) {
+func CallMethod(iObject interface{}, methodName string, args ...interface{}) ([]reflect.Value, error) {
 	inputs := convertInterfaceArgsToReflectValue(args)
 
-	value, ptr := initializeValueAndItsPointer(iValue)
+	value, ptr := initializeValueAndItsPointer(iObject)
 
 	methodValue := value.MethodByName(methodName)
 	methodPtr := ptr.MethodByName(methodName)
@@ -23,18 +22,8 @@ func CallMethod(iValue interface{}, methodName string, args ...interface{}) ([]r
 	return []reflect.Value{}, errors.New("method not found")
 }
 
-func CallMethodAndReturnBool(iValue interface{}, methodName string, args ...interface{}) (bool, error) {
-	reflectValues, err := CallMethod(iValue, methodName, args...)
-
-	if err == nil && len(reflectValues) > 0 {
-		return reflectValues[0].Interface().(bool), nil
-	} else {
-		return false, err
-	}
-}
-
-func CallMethodAndReturnInt(iValue interface{}, methodName string, args ...interface{}) (int, error) {
-	reflectValues, err := CallMethod(iValue, methodName, args...)
+func CallMethodAndReturnInt(iObject interface{}, methodName string, args ...interface{}) (int, error) {
+	reflectValues, err := CallMethod(iObject, methodName, args...)
 
 	if err == nil && len(reflectValues) > 0 {
 		return reflectValues[0].Interface().(int), nil
@@ -43,8 +32,8 @@ func CallMethodAndReturnInt(iValue interface{}, methodName string, args ...inter
 	}
 }
 
-func CallMethodAndReturnFloat64(iValue interface{}, methodName string, args ...interface{}) (float64, error) {
-	reflectValues, error := CallMethod(iValue, methodName, args...)
+func CallMethodAndReturnFloat64(iObject interface{}, methodName string, args ...interface{}) (float64, error) {
+	reflectValues, error := CallMethod(iObject, methodName, args...)
 
 	if error == nil && len(reflectValues) > 0 {
 		return reflectValues[0].Interface().(float64), nil
@@ -53,8 +42,8 @@ func CallMethodAndReturnFloat64(iValue interface{}, methodName string, args ...i
 	}
 }
 
-func CallMethodAndReturnString(iValue interface{}, methodName string, args ...interface{}) (string, error) {
-	reflectValues, error := CallMethod(iValue, methodName, args...)
+func CallMethodAndReturnString(iObject interface{}, methodName string, args ...interface{}) (string, error) {
+	reflectValues, error := CallMethod(iObject, methodName, args...)
 
 	if error == nil && len(reflectValues) > 0 {
 		return reflectValues[0].Interface().(string), nil
@@ -63,8 +52,18 @@ func CallMethodAndReturnString(iValue interface{}, methodName string, args ...in
 	}
 }
 
-func CallMethodAndReturnSliceOfInt(iValue interface{}, methodName string, args ...interface{}) ([]int, error) {
-	reflectValues, err := CallMethod(iValue, methodName, args...)
+func CallMethodAndReturnBool(iObject interface{}, methodName string, args ...interface{}) (bool, error) {
+	reflectValues, err := CallMethod(iObject, methodName, args...)
+
+	if err == nil && len(reflectValues) > 0 {
+		return reflectValues[0].Interface().(bool), nil
+	} else {
+		return false, err
+	}
+}
+
+func CallMethodAndReturnSliceOfInt(iObject interface{}, methodName string, args ...interface{}) ([]int, error) {
+	reflectValues, err := CallMethod(iObject, methodName, args...)
 
 	if err == nil && len(reflectValues) > 0 {
 		return reflectValues[0].Interface().([]int), nil
@@ -73,18 +72,8 @@ func CallMethodAndReturnSliceOfInt(iValue interface{}, methodName string, args .
 	}
 }
 
-func CallMethodAndReturnSliceOfBool(iValue interface{}, methodName string, args ...interface{}) ([]bool, error) {
-	reflectValues, err := CallMethod(iValue, methodName, args...)
-
-	if err == nil && len(reflectValues) > 0 {
-		return reflectValues[0].Interface().([]bool), nil
-	} else {
-		return []bool{}, err
-	}
-}
-
-func CallMethodAndReturnSliceOfFloat64(iValue interface{}, methodName string, args ...interface{}) ([]float64, error) {
-	reflectValues, err := CallMethod(iValue, methodName, args...)
+func CallMethodAndReturnSliceOfFloat64(iObject interface{}, methodName string, args ...interface{}) ([]float64, error) {
+	reflectValues, err := CallMethod(iObject, methodName, args...)
 
 	if err == nil && len(reflectValues) > 0 {
 		return reflectValues[0].Interface().([]float64), nil
@@ -93,8 +82,8 @@ func CallMethodAndReturnSliceOfFloat64(iValue interface{}, methodName string, ar
 	}
 }
 
-func CallMethodAndReturnSliceOfString(iValue interface{}, methodName string, args ...interface{}) ([]string, error) {
-	reflectValues, err := CallMethod(iValue, methodName, args...)
+func CallMethodAndReturnSliceOfString(iObject interface{}, methodName string, args ...interface{}) ([]string, error) {
+	reflectValues, err := CallMethod(iObject, methodName, args...)
 
 	if err == nil && len(reflectValues) > 0 {
 		return reflectValues[0].Interface().([]string), nil
@@ -103,15 +92,109 @@ func CallMethodAndReturnSliceOfString(iValue interface{}, methodName string, arg
 	}
 }
 
-func initializeValueAndItsPointer(iValue interface{}) (reflect.Value, reflect.Value) {
+func CallMethodAndReturnSliceOfBool(iObject interface{}, methodName string, args ...interface{}) ([]bool, error) {
+	reflectValues, err := CallMethod(iObject, methodName, args...)
+
+	if err == nil && len(reflectValues) > 0 {
+		return reflectValues[0].Interface().([]bool), nil
+	} else {
+		return []bool{}, err
+	}
+}
+
+func CallMethodWithArgsAsSliceOfInterface(iObject interface{}, methodName string, args []interface{}) ([]reflect.Value, error) {
+	return CallMethod(iObject, methodName, args...)
+}
+
+func CallMethodWithArgsAsSliceOfInterfaceAndReturnInt(iObject interface{}, methodName string, args []interface{}) (int, error) {
+	reflectValues, err := CallMethodWithArgsAsSliceOfInterface(iObject, methodName, args)
+
+	if err == nil && len(reflectValues) > 0 {
+		return reflectValues[0].Interface().(int), nil
+	} else {
+		return 0, err
+	}
+}
+
+func CallMethodWithArgsAsSliceOfInterfaceAndReturnFloat64(iObject interface{}, methodName string, args []interface{}) (float64, error) {
+	reflectValues, error := CallMethodWithArgsAsSliceOfInterface(iObject, methodName, args)
+
+	if error == nil && len(reflectValues) > 0 {
+		return reflectValues[0].Interface().(float64), nil
+	} else {
+		return 0.0, error
+	}
+}
+
+func CallMethodWithArgsAsSliceOfInterfaceAndReturnString(iObject interface{}, methodName string, args []interface{}) (string, error) {
+	reflectValues, error := CallMethodWithArgsAsSliceOfInterface(iObject, methodName, args)
+
+	if error == nil && len(reflectValues) > 0 {
+		return reflectValues[0].Interface().(string), nil
+	} else {
+		return "", error
+	}
+}
+
+func CallMethodWithArgsAsSliceOfInterfaceAndReturnBool(iObject interface{}, methodName string, args []interface{}) (bool, error) {
+	reflectValues, err := CallMethodWithArgsAsSliceOfInterface(iObject, methodName, args)
+
+	if err == nil && len(reflectValues) > 0 {
+		return reflectValues[0].Interface().(bool), nil
+	} else {
+		return false, err
+	}
+}
+
+func CallMethodWithArgsAsSliceOfInterfaceAndReturnSliceOfInt(iObject interface{}, methodName string, args []interface{}) ([]int, error) {
+	reflectValues, err := CallMethodWithArgsAsSliceOfInterface(iObject, methodName, args)
+
+	if err == nil && len(reflectValues) > 0 {
+		return reflectValues[0].Interface().([]int), nil
+	} else {
+		return []int{}, err
+	}
+}
+
+func CallMethodWithArgsAsSliceOfInterfaceAndReturnSliceOfFloat64(iObject interface{}, methodName string, args []interface{}) ([]float64, error) {
+	reflectValues, err := CallMethodWithArgsAsSliceOfInterface(iObject, methodName, args)
+
+	if err == nil && len(reflectValues) > 0 {
+		return reflectValues[0].Interface().([]float64), nil
+	} else {
+		return []float64{}, err
+	}
+}
+
+func CallMethodWithArgsAsSliceOfInterfaceAndReturnSliceOfString(iObject interface{}, methodName string, args []interface{}) ([]string, error) {
+	reflectValues, err := CallMethodWithArgsAsSliceOfInterface(iObject, methodName, args)
+
+	if err == nil && len(reflectValues) > 0 {
+		return reflectValues[0].Interface().([]string), nil
+	} else {
+		return []string{}, err
+	}
+}
+
+func CallMethodWithArgsAsSliceOfInterfaceAndReturnSliceOfBool(iObject interface{}, methodName string, args []interface{}) ([]bool, error) {
+	reflectValues, err := CallMethodWithArgsAsSliceOfInterface(iObject, methodName, args)
+
+	if err == nil && len(reflectValues) > 0 {
+		return reflectValues[0].Interface().([]bool), nil
+	} else {
+		return []bool{}, err
+	}
+}
+
+func initializeValueAndItsPointer(iObject interface{}) (reflect.Value, reflect.Value) {
 	var ptr reflect.Value
 	var value reflect.Value
 
-	switch v := iValue.(type) {
+	switch v := iObject.(type) {
 	case reflect.Value:
 		value = v
 	default:
-		value = reflect.ValueOf(iValue)
+		value = reflect.ValueOf(iObject)
 	}
 
 	// if we start with a pointer, we need to get value pointed to
@@ -120,7 +203,7 @@ func initializeValueAndItsPointer(iValue interface{}) (reflect.Value, reflect.Va
 		ptr = value
 		value = ptr.Elem()
 	} else {
-		ptr = reflect.New(reflect.TypeOf(iValue))
+		ptr = reflect.New(reflect.TypeOf(iObject))
 		temp := ptr.Elem()
 		temp.Set(value)
 	}
@@ -129,7 +212,6 @@ func initializeValueAndItsPointer(iValue interface{}) (reflect.Value, reflect.Va
 }
 
 func convertInterfaceArgsToReflectValue(args []interface{}) []reflect.Value {
-	fmt.Println("convertInterfaceArgsToReflectValue: ")
 	var inputs []reflect.Value
 
 	for i := range args {
