@@ -77,12 +77,24 @@ func (myMath *MyMath) AreOperandsBiggerThanArgValue(value int) []bool {
 	return []bool{(myMath.Operand1 > value), (myMath.Operand2 > value)}
 }
 
-func TestCallMethod(t *testing.T) {
-	type TestMyMath struct {
-		MyMath
-	}
+// returns void
+func (myMath *MyMath) SetOperand1(value int) {
+	myMath.Operand1 = value
+}
 
-	testMyMath := TestMyMath{}
+func TestCallMethodAndReturnVoid(t *testing.T) {
+	testMyMath := MyMath{}
+
+	CallMethod(&testMyMath, "SetOperand1", 8)
+	if testMyMath.Operand1 == 8 {
+		t.Log("CallMethod(testMyMath, \"SetOperand1\", 8) PASSED, Operand1 value is 8")
+	} else {
+		t.Errorf("CallMethod(testMyMath, \"SetOperand1\", 8) FAILED, Operand1 value expected to be 8, but is %d", testMyMath.Operand1)
+	}
+}
+
+func TestCallMethod(t *testing.T) {
+	testMyMath := MyMath{}
 	testMyMath.Operand1 = 2
 	testMyMath.Operand2 = 3
 	value, _ := CallMethod(testMyMath, "Sum")
@@ -95,11 +107,7 @@ func TestCallMethod(t *testing.T) {
 }
 
 func TestCallMethodAndReturnInt(t *testing.T) {
-	type TestMyMath struct {
-		MyMath
-	}
-
-	testMyMath := TestMyMath{}
+	testMyMath := MyMath{}
 	testMyMath.Operand1 = 2
 	testMyMath.Operand2 = 3
 	intValue, _ := CallMethodAndReturnInt(testMyMath, "Sum")
@@ -116,11 +124,7 @@ func TestCallMethodWithParamsAndReturnInt(t *testing.T) {
 	args = append(args, 2)
 	args = append(args, 3)
 
-	type TestMyMath struct {
-		MyMath
-	}
-
-	testMyMath := TestMyMath{}
+	testMyMath := MyMath{}
 	testMyMath.Operand1 = 2
 	testMyMath.Operand2 = 3
 	intValue, _ := CallMethodAndReturnInt(testMyMath, "SumWithExtras", 1, 2, 3)
@@ -132,11 +136,7 @@ func TestCallMethodWithParamsAndReturnInt(t *testing.T) {
 }
 
 func TestCallMethodAndReturnFloat64(t *testing.T) {
-	type TestMyMath struct {
-		MyMath
-	}
-
-	testMyMath := TestMyMath{}
+	testMyMath := MyMath{}
 	testMyMath.Operand1 = 4
 	testMyMath.Operand2 = 2
 	floatValue, _ := CallMethodAndReturnFloat64(testMyMath, "Average")
@@ -148,11 +148,7 @@ func TestCallMethodAndReturnFloat64(t *testing.T) {
 }
 
 func TestCallMethodAndReturnString(t *testing.T) {
-	type TestMyMath struct {
-		MyMath
-	}
-
-	testMyMath := TestMyMath{}
+	testMyMath := MyMath{}
 	testMyMath.Operand1 = 9
 	testMyMath.Operand2 = 9
 	stringValue, _ := CallMethodAndReturnString(testMyMath, "ConvertSumToStr")
@@ -164,11 +160,7 @@ func TestCallMethodAndReturnString(t *testing.T) {
 }
 
 func TestCallMethodAndReturnBool(t *testing.T) {
-	type TestMyMath struct {
-		MyMath
-	}
-
-	testMyMath := TestMyMath{}
+	testMyMath := MyMath{}
 	testMyMath.Operand1 = 2
 	testMyMath.Operand2 = 2
 	boolValue, _ := CallMethodAndReturnBool(testMyMath, "AreOperandsEqual")
@@ -180,11 +172,7 @@ func TestCallMethodAndReturnBool(t *testing.T) {
 }
 
 func TestCallMethodAndReturnSliceOfInt(t *testing.T) {
-	type TestMyMath struct {
-		MyMath
-	}
-
-	testMyMath := TestMyMath{}
+	testMyMath := MyMath{}
 	testMyMath.Operand1 = 2
 	testMyMath.Operand2 = 3
 	intValues, _ := CallMethodAndReturnSliceOfInt(testMyMath, "PutOperandsInSlice")
@@ -209,11 +197,7 @@ func TestCallMethodAndReturnSliceOfInt(t *testing.T) {
 }
 
 func TestCallMethodAndReturnSliceOfFloat64(t *testing.T) {
-	type TestMyMath struct {
-		MyMath
-	}
-
-	testMyMath := TestMyMath{}
+	testMyMath := MyMath{}
 	testMyMath.Operand1 = 2
 	testMyMath.Operand2 = 3
 	float64Values, _ := CallMethodAndReturnSliceOfFloat64(testMyMath, "TransformOperandsToTenPercent")
@@ -238,11 +222,7 @@ func TestCallMethodAndReturnSliceOfFloat64(t *testing.T) {
 }
 
 func TestCallMethodAndReturnSliceOfString(t *testing.T) {
-	type TestMyMath struct {
-		MyMath
-	}
-
-	testMyMath := TestMyMath{}
+	testMyMath := MyMath{}
 	testMyMath.Operand1 = 2
 	testMyMath.Operand2 = 3
 	stringValues, _ := CallMethodAndReturnSliceOfString(testMyMath, "PutOperandsBetweenXs")
@@ -267,11 +247,7 @@ func TestCallMethodAndReturnSliceOfString(t *testing.T) {
 }
 
 func TestCallMethodAndReturnSliceOfBool(t *testing.T) {
-	type TestMyMath struct {
-		MyMath
-	}
-
-	testMyMath := TestMyMath{}
+	testMyMath := MyMath{}
 	testMyMath.Operand1 = 2
 	testMyMath.Operand2 = 3
 	boolValues, _ := CallMethodAndReturnSliceOfBool(testMyMath, "AreOperandsEven")
