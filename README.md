@@ -44,6 +44,12 @@ func main() {
 }
 ```
 
+Output:
+```
+Sum is 3
+Average is 1.500000
+```
+
 If you realized, the lines `intValue := sumValue[0].Interface().(int)` and `floatValue := avgValue[0].Interface().(float64)` try to convert the values to _int_ and to _float64_, respectively.
 
 If your method returns a _string_ you would need to use _string_ between parentheses:
@@ -77,9 +83,7 @@ The _invoker_ package has functions that converts from _[]reflect.value_ to many
 |CallMethodAndReturnSliceOfString|Call method and converts the result to slice of string|
 |CallMethodAndReturnSliceOfBool|Call method and converts the result to slice of bool|
 
-```
-OBS: All those methods above work with the same parameters that `CallMethod`
-```
+__OBS:__ All those methods above work with the same parameters that `CallMethod`
 
 Example:
 
@@ -127,9 +131,13 @@ func main() {
 }
 ```
 
+Output:
 ```
-OBS: In both samples we can substitute _CallMethod_ and _CallMethodWithArgsAsSliceOfInterface_ for _CallMethodAndReturnFloat64_ and _CallMethodWithArgsAsSliceOfInterfaceAndReturnFloat64_, respectively, and suppress the conversion parts.
+Weighted Average (sample 1) is 2.600000
+Weighted Average (sample 2) is 2.583333
 ```
+
+__OBS:__ In both samples we can substitute _CallMethod_ and _CallMethodWithArgsAsSliceOfInterface_ for _CallMethodAndReturnFloat64_ and _CallMethodWithArgsAsSliceOfInterfaceAndReturnFloat64_, respectively, and suppress the conversion parts.
 
 ### Again, You Don't Need To Convert Always
 
@@ -146,9 +154,7 @@ Same stuff: the _invoker_ package has functions that converts from _[]reflect.va
 |CallMethodWithArgsAsSliceOfInterfaceAndReturnSliceOfString|Call method and converts the result to slice of string|
 |CallMethodWithArgsAsSliceOfInterfaceAndReturnSliceOfBool|Call method and converts the result to slice of bool|
 
-```
-OBS: All those methods above work with the same parameters that `CallMethodWithArgsAsSliceOfInterface`
-```
+__OBS:__ All those methods above work with the same parameters that _CallMethodWithArgsAsSliceOfInterface_
 
 ## Object As An Interface Value
 
