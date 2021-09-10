@@ -4,6 +4,12 @@
 
 _Invoker_ is a _Golang_ package which calls methods from _Compositions_ or _Interfaces_ passing to it the object (or interface), the name of the method as a string and the parameters dynamically. Also, you can handle the return of the method regardless of the type.
 
+## Install
+
+```
+go get github.com/adilsonchacon/invoker
+```
+
 ## First example
 
 Let's take a look at the most general function: _CallMethod_. It return an slice of _reflect.Value_ so you need to convert to the right type, as you can see in the example below.
