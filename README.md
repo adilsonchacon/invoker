@@ -12,7 +12,7 @@ go get github.com/adilsonchacon/invoker
 
 ## First example
 
-Let's take a look at the most general function: _CallMethod_. It return an slice of _reflect.Value_ so you need to convert to the right type, as you can see in the example below.
+Let's take a look at the most general function: _CallMethod_. It returns an slice of _reflect.Value_ so you need to convert to the right type, as you can see in the example below.
 
 ```go
 package main
