@@ -221,7 +221,7 @@ Output:
 [Design Patterns Go Postgresql]
 ```
 
-## Work With Interfaces
+## Working With Interfaces
 
 For _invoker_, _Interfaces_ work just like _Composition_
 
